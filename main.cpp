@@ -53,7 +53,6 @@ bool isEmptyLoop(const T& input) {
     const auto* bytes = reinterpret_cast<const int8_t*>(&input);
 //#pragma clang loop unroll(disable)
     for (int i = 0; i < arrSize; i++) {
-        //if (i == 1) throw "uwu";
         __m256i n;
         memcpy(&n, &bytes[i * sizeof(__m256i)], sizeof(__m256i));
         if (_mm256_testz_si256(n, n) == 0) return false;
