@@ -9,6 +9,15 @@
 #include <immintrin.h>
 
 
+template<size_t N>
+bool isEmptySimpleOr(const std::array<uint8_t, N> &array) {
+    uint8_t acc = 0;
+    for (int i = 0; i < array.size(); i++) {
+        acc |= array[i];
+    }
+    return acc;
+}
+
 template<typename T> requires (sizeof(T) >= sizeof(__m256i))
 bool isEmptyOr(const T& input) {
     struct wrapper {
@@ -84,12 +93,22 @@ constexpr auto testData() {
     return data;
 }
 
+
 static void BM_testOr(benchmark::State& state) {
     std::array<uint8_t, TEST_SIZE> data = testData();
     benchmark::DoNotOptimize(data);
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(isEmptyOr(data));
+    }
+}
+
+static void BM_testSimpleOr(benchmark::State& state) {
+    std::array<uint8_t, TEST_SIZE> data = testData();
+    benchmark::DoNotOptimize(data);
+
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(isEmptySimpleOr(data));
     }
 }
 
@@ -142,6 +161,7 @@ static void BM_testMemcmp(benchmark::State& state) {
 }
 
 BENCHMARK(BM_testOr);
+BENCHMARK(BM_testSimpleOr);
 BENCHMARK(BM_testLoop);
 BENCHMARK(BM_testLoopUnrolled);
 BENCHMARK(BM_testInt64Loop);
