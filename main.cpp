@@ -15,7 +15,7 @@ bool isEmptySimpleOr(const std::array<uint8_t, N> &array) {
     for (int i = 0; i < array.size(); i++) {
         acc |= array[i];
     }
-    return acc;
+    return !acc;
 }
 
 template<typename T> requires (sizeof(T) >= sizeof(__m256i))
