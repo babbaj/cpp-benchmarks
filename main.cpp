@@ -29,7 +29,7 @@ bool isEmptyOr(const T& input) {
             return wrapper{n};
         }() | ...).value;
 
-        return _mm256_testz_si256(result, result) != 0;
+        return _mm256_testz_si256(result, result) == 0;
     }(std::make_index_sequence<arrSize>{});
 }
 
