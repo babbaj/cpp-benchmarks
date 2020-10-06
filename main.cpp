@@ -51,7 +51,7 @@ template<typename T> requires (sizeof(T) >= sizeof(__m256i))
 bool isEmptyLoop(const T& input) {
     constexpr auto arrSize = sizeof(T) / sizeof(__m256i);
     const auto* bytes = reinterpret_cast<const int8_t*>(&input);
-//#pragma clang loop unroll(disable)
+#pragma clang loop unroll(disable)
     for (int i = 0; i < arrSize; i++) {
         __m256i n;
         memcpy(&n, &bytes[i * sizeof(__m256i)], sizeof(__m256i));
@@ -65,6 +65,7 @@ bool isEmptyInt64Loop(const T& input) {
     constexpr auto arrSize = sizeof(T) / sizeof(int64_t);
     const auto* bytes = reinterpret_cast<const int8_t*>(&input);
 
+#pragma clang loop unroll(disable)
     for (int i = 0; i < arrSize; i++) {
         int64_t n;
         memcpy(&n, &bytes[i * sizeof(int64_t)], sizeof(int64_t));
